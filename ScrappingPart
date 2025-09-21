@@ -1,0 +1,116 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "85f23fa1-cad3-4633-b3d7-9461702a0d59",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: requests in /home/ashishkumar/anaconda3/lib/python3.12/site-packages (2.32.3)\n",
+      "Requirement already satisfied: charset-normalizer<4,>=2 in /home/ashishkumar/anaconda3/lib/python3.12/site-packages (from requests) (3.3.2)\n",
+      "Requirement already satisfied: idna<4,>=2.5 in /home/ashishkumar/anaconda3/lib/python3.12/site-packages (from requests) (3.7)\n",
+      "Requirement already satisfied: urllib3<3,>=1.21.1 in /home/ashishkumar/anaconda3/lib/python3.12/site-packages (from requests) (2.2.3)\n",
+      "Requirement already satisfied: certifi>=2017.4.17 in /home/ashishkumar/anaconda3/lib/python3.12/site-packages (from requests) (2024.8.30)\n",
+      "Note: you may need to restart the kernel to use updated packages.\n"
+     ]
+    }
+   ],
+   "source": [
+    "pip install requests"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "dce7b3a8-f38a-4c88-90ac-c99fd14cb1ac",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "wait scrapping the data\n",
+      "Data saved successfully in quotes.csv\n"
+     ]
+    }
+   ],
+   "source": [
+    "import requests\n",
+    "from bs4 import BeautifulSoup\n",
+    "import csv\n",
+    "try:\n",
+    "    data=[]\n",
+    "    i=1\n",
+    "    print('wait scrapping the data')\n",
+    "    while(i<=10):\n",
+    "        url=f'https://quotes.toscrape.com/page/{i}/'\n",
+    "        response=requests.get(url)\n",
+    "        if(response.status_code==200):\n",
+    "            soup=BeautifulSoup(response.text,'html.parser')\n",
+    "            divClass=soup.find_all('div',class_='quote')\n",
+    "            for ele in divClass:\n",
+    "                #scrapping the quote\n",
+    "                quoteText=ele.find('span',class_='text')\n",
+    "                #scrapping the Author\n",
+    "                Author = ele.find('small',class_='author')\n",
+    "                #scrapping the tag_name\n",
+    "                TagName=ele.find_all('a',class_='tag')\n",
+    "                tags=[]\n",
+    "                for tag in TagName:\n",
+    "                    tags.append(tag.get_text())\n",
+    "                dic={\n",
+    "                    'author':Author.get_text(),\n",
+    "                    'quote':quoteText.get_text(),\n",
+    "                    'tag_name':tags\n",
+    "                }\n",
+    "                data.append(dic)\n",
+    "        i+=1\n",
+    "    #saving the data into the csv format\n",
+    "    with open('quotes.csv', 'w', newline='', encoding='utf-8') as csvfile:\n",
+    "        fieldnames = ['author', 'quote', 'tag_name']\n",
+    "        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)\n",
+    "\n",
+    "        writer.writeheader()\n",
+    "        for item in data:\n",
+    "            writer.writerow(item)\n",
+    "\n",
+    "    print(\"Data saved successfully in quotes.csv\")\n",
+    "except Exception as err:\n",
+    "    print('Error',err)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "25c81289-f33b-40bb-a754-49327d231991",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
