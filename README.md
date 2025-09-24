@@ -1,4 +1,4 @@
-# Masai_EDA_Project
+# Exploratory Data Analysis Project
 ##PART1
 #EXPLANATION:
 1. Libraries:
