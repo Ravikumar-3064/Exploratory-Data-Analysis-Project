@@ -143,3 +143,27 @@ LIMIT 1;
 👩‍💻 Finds number of distinct authors.
 
 📈 Provides statistical overview of dataset.
+
+
+
+                                             RELAVENT TAGS
+
+- Exploratory-data-analysis
+
+- eda
+
+- data-science
+
+- data-visualization
+
+- data-analysis
+
+- pandas
+
+- python
+
+- statistics
+
+- jupyter-notebook
+
+ 
